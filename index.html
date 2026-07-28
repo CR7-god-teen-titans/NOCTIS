@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOCTIS: Legacy of the Dark Hero | Videojuego de Acción y Aventura</title>
+  <meta name="description" content="Acompaña a Noctis en una épica historia de acción y aventura. Domina la fuerza oscura oculta para convertirte en el verdadero héroe de Nocturnia.">
+  <!-- Google Fonts: Orbitron & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Game Container -->
+  <div id="app-container">
+    <!-- Canvas for 2D Action Game -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Top Navigation Header / HUD Bar -->
+    <header id="hud-header" class="glass-panel">
+      <div class="brand">
+        <span class="logo-icon">⚡</span>
+        <h1 class="logo-text">NOCTIS <span class="sub-logo">LEGACY OF THE DARK HERO</span></h1>
+      </div>
+      
+      <!-- Player Stats HUD (in game) -->
+      <div id="player-hud" class="hud-stats hidden">
+        <!-- Health Bar -->
+        <div class="stat-box health-box">
+          <div class="stat-label">SALUD <span id="hp-text">100 / 100</span></div>
+          <div class="bar-bg"><div id="hp-fill" class="bar-fill hp-fill" style="width: 100%;"></div></div>
+        </div>
+
+        <!-- Rage / Dark Power Meter -->
+        <div class="stat-box rage-box">
+          <div class="stat-label">FURIA OSCURA (R) <span id="rage-text">0%</span></div>
+          <div class="bar-bg"><div id="rage-fill" class="bar-fill rage-fill" style="width: 0%;"></div></div>
+        </div>
+
+        <!-- Chapter Info & Objective -->
+        <div class="chapter-badge">
+          <span id="current-chapter-title">Capítulo 1: Afueras de Nocturnia</span>
+        </div>
+        <div class="objective-badge" id="objective-badge">
+          🎯 <span id="objective-text">Sombras: 5/5</span>
+        </div>
+      </div>
+
+      <!-- Controls & Settings Header -->
+      <div class="header-actions">
+        <button id="btn-audio" class="icon-btn" title="Activar/Desactivar Sonido">🔊</button>
+        <button id="btn-controls-modal" class="btn btn-secondary btn-sm">🎮 Controles</button>
+        <button id="btn-upgrades-modal" class="btn btn-secondary btn-sm hidden">⚡ Habilidades</button>
+      </div>
+    </header>
+
+    <!-- START MENU OVERLAY -->
+    <div id="screen-start" class="screen-overlay active">
+      <div class="hero-banner">
+        <img src="assets/noctis_cover.png" alt="Noctis Hero" class="hero-img">
+        <div class="banner-glass">
+          <div class="tag">NARRATIVA ÉPICA Y ACCIÓN</div>
+          <h2>¿PODRÁS DOMINAR LA FUERZA OSCURA?</h2>
+          <p>Noctis es un guerrero formidable con un secreto aterrador: dentro de él duerme un poder destructivo que surge con la furia. Acompaña a Noctis en su lucha por controlar sus sombras y salvar la ciudad de Nocturnia.</p>
+          <div class="start-buttons">
+            <button id="btn-play-story" class="btn btn-primary btn-glow btn-lg">⚔️ INICIAR AVENTURA (HISTORIA)</button>
+            <button id="btn-select-chapter" class="btn btn-secondary btn-lg">📜 SELECCIONAR CAPÍTULO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAPTER SELECTION OVERLAY -->
+    <div id="screen-chapters" class="screen-overlay hidden">
+      <div class="modal-card glass-panel wide-card">
+        <div class="modal-header">
+          <h2>CAPÍTULOS DE LA HISTORIA</h2>
+          <button class="close-btn btn-close-chapters">&times;</button>
+        </div>
+        <div class="chapters-grid">
+          <!-- Chapter 1 -->
+          <div class="chapter-card active-card" data-chapter="1">
+            <div class="chapter-number">CAPÍTULO I</div>
+            <h3>Las Afueras de Nocturnia</h3>
+            <p>Las sombras invaden los suburbios. Noctis debe probar sus habilidades básicas de combate.</p>
+            <button class="btn btn-primary btn-sm btn-start-chap" data-chapter="1">JUGAR CAPÍTULO 1</button>
+          </div>
+          <!-- Chapter 2 -->
+          <div class="chapter-card" data-chapter="2">
+            <div class="chapter-number">CAPÍTULO II</div>
+            <h3>El Puente de los Suspiros</h3>
+            <p>Patrullas de sombras pesadas bloquean el puente hacia la antigua fortaleza ancestral.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="2">JUGAR CAPÍTULO 2</button>
+          </div>
+          <!-- Chapter 3 -->
+          <div class="chapter-card" data-chapter="3">
+            <div class="chapter-number">CAPÍTULO III</div>
+            <h3>Kaelen el Manipulador</h3>
+            <p>Kaelen intenta provocar la furia de Noctis para convertirlo en la nueva amenaza que el mundo tema.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="3">JUGAR CAPÍTULO 3</button>
+          </div>
+          <!-- Chapter 4 -->
+          <div class="chapter-card" data-chapter="4">
+            <div class="chapter-number">CAPÍTULO IV</div>
+            <h3>Las Catacumbas del Olvido</h3>
+            <p>Ruinas subterráneas impregnadas de magia rúnica donde acechan sombras asesinas velozmente.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="4">JUGAR CAPÍTULO 4</button>
+          </div>
+          <!-- Chapter 5 -->
+          <div class="chapter-card" data-chapter="5">
+            <div class="chapter-number">CAPÍTULO V</div>
+            <h3>El Templo de la Discordia</h3>
+            <p>El santuario en las alturas sobre cielos de tormenta, donde el abismo intenta corromper a Noctis.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="5">JUGAR CAPÍTULO 5</button>
+          </div>
+          <!-- Chapter 6 -->
+          <div class="chapter-card" data-chapter="6">
+            <div class="chapter-number">CAPÍTULO VI</div>
+            <h3>Umbra Noctis: El Espejo Oscuro</h3>
+            <p>Noctis se enfrenta a la encarnación de su propia furia descontrolada en un duelo a muerte.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="6">JUGAR CAPÍTULO 6</button>
+          </div>
+          <!-- Chapter 7 -->
+          <div class="chapter-card" data-chapter="7">
+            <div class="chapter-number">CAPÍTULO VII (JEFE SUPREMO)</div>
+            <h3>El Trono del Abismo: Malakor</h3>
+            <p>La batalla final por Nocturnia. Domina la furia para salvar la ciudad y convertirte en el héroe definitivo.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="7">JUGAR CAPÍTULO 7</button>
+          </div>
+          <!-- ARC 2: LA SOMBRA RENACE -->
+          <div class="chapters-arc-divider"><span>⚔️ ARCO II: LA SOMBRA RENACE ⚔️</span></div>
+          <!-- Chapter 8 -->
+          <div class="chapter-card" data-chapter="8">
+            <div class="chapter-number">CAPÍTULO VIII</div>
+            <h3>El Despertar del Vacío</h3>
+            <p>Tras la caída de Malakor, una energía antigua despierta en las ruinas del trono. Noctis siente una fuerza más profunda que la oscuridad.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="8">JUGAR CAPÍTULO 8</button>
+          </div>
+          <!-- Chapter 9 -->
+          <div class="chapter-card" data-chapter="9">
+            <div class="chapter-number">CAPÍTULO IX</div>
+            <h3>El Bosque de Almas Perdidas</h3>
+            <p>Un bosque encantado donde los espíritus de guerreros caídos atacan sin piedad. Cada árbol esconde un enemigo.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="9">JUGAR CAPÍTULO 9</button>
+          </div>
+          <!-- Chapter 10 -->
+          <div class="chapter-card" data-chapter="10">
+            <div class="chapter-number">CAPÍTULO X</div>
+            <h3>La Fortaleza de Hierro Oscuro</h3>
+            <p>Una fortaleza mecánica alimentada por energía sombría. Las máquinas de guerra de Malakor aún operan sin su amo.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="10">JUGAR CAPÍTULO 10</button>
+          </div>
+          <!-- Chapter 11 -->
+          <div class="chapter-card" data-chapter="11">
+            <div class="chapter-number">CAPÍTULO XI</div>
+            <h3>Zephyr, el Cazador de Héroes</h3>
+            <p>Un asesino legendario enviado a eliminar a Noctis. Más rápido que cualquier sombra, ataca desde las alturas.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="11">JUGAR CAPÍTULO 11</button>
+          </div>
+          <!-- Chapter 12 -->
+          <div class="chapter-card" data-chapter="12">
+            <div class="chapter-number">CAPÍTULO XII</div>
+            <h3>El Abismo Marino</h3>
+            <p>Las profundidades de un océano corrupto. Criaturas abisales rodean a Noctis mientras busca la Reliquia del Silencio.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="12">JUGAR CAPÍTULO 12</button>
+          </div>
+          <!-- Chapter 13 -->
+          <div class="chapter-card" data-chapter="13">
+            <div class="chapter-number">CAPÍTULO XIII</div>
+            <h3>La Torre del Reloj Eterno</h3>
+            <p>Una torre que distorsiona el tiempo. Los enemigos aparecen y desaparecen entre las dimensiones temporales.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="13">JUGAR CAPÍTULO 13</button>
+          </div>
+          <!-- Chapter 14 -->
+          <div class="chapter-card" data-chapter="14">
+            <div class="chapter-number">CAPÍTULO XIV</div>
+            <h3>El Valle de los Cristales Rotos</h3>
+            <p>Un valle donde cristales gigantes amplifican el poder oscuro. Cada cristal roto libera oleadas de sombras.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="14">JUGAR CAPÍTULO 14</button>
+          </div>
+          <!-- Chapter 15 -->
+          <div class="chapter-card" data-chapter="15">
+            <div class="chapter-number">CAPÍTULO XV</div>
+            <h3>La Ciudadela Carmesí</h3>
+            <p>La base de operaciones de la Orden Carmesí, una facción de guerreros corruptos por la sangre de Malakor.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="15">JUGAR CAPÍTULO 15</button>
+          </div>
+          <!-- Chapter 16 -->
+          <div class="chapter-card" data-chapter="16">
+            <div class="chapter-number">CAPÍTULO XVI</div>
+            <h3>Nyx, la Reina de la Noche</h3>
+            <p>La verdadera maestra detrás de Malakor revela su identidad. Nyx controla la oscuridad misma con poder absoluto.</p>
+            <button class="btn btn-secondary btn-sm btn-start-chap" data-chapter="16">JUGAR CAPÍTULO 16</button>
+          </div>
+          <!-- Chapter 17 -->
+          <div class="chapter-card" data-chapter="17">
+            <div class="chapter-number">CAPÍTULO XVII (FINAL DEFINITIVO)</div>
+            <h3>El Origen de la Oscuridad: VOID</h3>
+            <p>El enfrentamiento final contra VOID, la entidad primordial que creó toda la oscuridad. El destino de la realidad está en juego.</p>
+            <button class="btn btn-primary btn-sm btn-glow btn-start-chap" data-chapter="17">JUGAR CAPÍTULO FINAL</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CINEMATIC / DIALOGUE OVERLAY -->
+    <div id="dialogue-overlay" class="hidden">
+      <div class="dialogue-box glass-panel">
+        <div class="speaker-portrait">
+          <img id="speaker-img" src="assets/noctis_cover.png" alt="Speaker">
+        </div>
+        <div class="speaker-content">
+          <div id="speaker-name" class="speaker-name">NOCTIS</div>
+          <div id="dialogue-text" class="dialogue-text">"Siento esa energía oscura hirviendo en mis venas otra vez... Debo mantener la calma."</div>
+          
+          <!-- Choices container if applicable -->
+          <div id="dialogue-choices" class="dialogue-choices hidden"></div>
+
+          <div class="dialogue-footer">
+            <button id="btn-next-dialogue" class="btn btn-primary btn-sm">Continuar ➔</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS MODAL -->
+    <div id="modal-controls" class="modal-overlay hidden">
+      <div class="modal-card glass-panel">
+        <div class="modal-header">
+          <h2>CONTROLES DEL JUEGO</h2>
+          <button class="close-btn btn-close-modal">&times;</button>
+        </div>
+        <div class="controls-list">
+          <div class="control-item"><kbd>A</kbd> / <kbd>D</kbd> o <kbd>←</kbd> / <kbd>→</kbd> <span>Moverse a la Izquierda / Derecha</span></div>
+          <div class="control-item"><kbd>W</kbd> o <kbd>Espacio</kbd> o <kbd>↑</kbd> <span>Saltar / Doble Salto</span></div>
+          <div class="control-item"><kbd>J</kbd> o <kbd>Z</kbd> <span>Ataque de Espada (Combos)</span></div>
+          <div class="control-item"><kbd>K</kbd> o <kbd>X</kbd> <span>Esquiva de Sombra (Dash)</span></div>
+          <div class="control-item"><kbd>R</kbd> o <kbd>C</kbd> <span><strong>DESPERTAR OSCURO / RAGE MODE</strong> (Requiere Furia al 100%)</span></div>
+          <div class="control-item"><kbd>L</kbd> o <kbd>V</kbd> <span>Ataque Especial de Garra de Caos (Modo Oscuro)</span></div>
+          <div class="control-item"><kbd>I</kbd> o <kbd>B</kbd> <span>💥 <strong>BAZUCA / LANZAGRANADAS DE CAOS</strong> (Explosión Masiva AOE)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPGRADES MODAL -->
+    <div id="modal-upgrades" class="modal-overlay hidden">
+      <div class="modal-card glass-panel wide-card">
+        <div class="modal-header">
+          <h2>ÁRBOL DE HABILIDADES DE NOCTIS</h2>
+          <button class="close-btn btn-close-modal">&times;</button>
+        </div>
+        <div class="upgrade-points-badge">Puntos de Habilidad Disponibles: <span id="skill-points-count">0</span></div>
+        <div class="upgrades-grid">
+          <div class="upgrade-node" id="upg-blade">
+            <h4>⚔️ Filo de Sombra (+20% Daño Base)</h4>
+            <p>Incrementa el daño de la espada de Noctis.</p>
+            <button class="btn btn-sm btn-primary btn-buy-upgrade" data-upgrade="blade">Mejorar (1 Pza)</button>
+          </div>
+          <div class="upgrade-node" id="upg-rage-gain">
+            <h4>🔥 Furia Imparable (+30% Ganancia de Ira)</h4>
+            <p>Genera furia más rápido al golpear enemigos.</p>
+            <button class="btn btn-sm btn-primary btn-buy-upgrade" data-upgrade="rageGain">Mejorar (1 Pza)</button>
+          </div>
+          <div class="upgrade-node" id="upg-health">
+            <h4>🛡️ Voluntad de Hierro (+40 Salud Máxima)</h4>
+            <p>Aumenta la resistencia de Noctis a los ataques oscuros.</p>
+            <button class="btn btn-sm btn-primary btn-buy-upgrade" data-upgrade="health">Mejorar (1 Pza)</button>
+          </div>
+          <div class="upgrade-node" id="upg-bazooka">
+            <h4>💥 Bazuca de Caos (+50% Daño AOE)</h4>
+            <p>Incrementa el radio y daño de la granada expansiva.</p>
+            <button class="btn btn-sm btn-primary btn-buy-upgrade" data-upgrade="bazooka">Mejorar (1 Pza)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER / VICTORY OVERLAY -->
+    <div id="screen-end" class="screen-overlay hidden">
+      <div class="modal-card glass-panel text-center">
+        <h2 id="end-title">¡CAPÍTULO COMPLETADO!</h2>
+        <p id="end-subtitle">Noctis ha demostrado un control legendario sobre sus poderes.</p>
+        <div id="end-art" class="end-art"></div>
+        <div class="end-actions">
+          <button id="btn-retry" class="btn btn-secondary btn-lg">🔄 REINTENTAR NIVEL</button>
+          <button id="btn-next-chapter" class="btn btn-primary btn-glow btn-lg">➡️ SIGUIENTE CAPÍTULO</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Game Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/traps.js"></script>
+  <script src="js/allies.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
