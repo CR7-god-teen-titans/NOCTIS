@@ -279,7 +279,7 @@ class GameEngine {
           { speaker: "NOCTIS", text: "He enfrentado a mi propia sombra. Un cazador no me asusta.", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 4,
-        villainType: 'umbra',
+        villainType: 'zephyr',
         allies: ['leo', 'maya', 'kael', 'elias', 'silas'],
         traps: [{ type: 'saw_blade', count: 2 }, { type: 'fire', count: 2 }]
       },
@@ -321,7 +321,7 @@ class GameEngine {
           { speaker: "NOCTIS", text: "Nunca olvidaré tus palabras, Elias. Aprenderé a controlar mi oscuridad. Te lo juro.", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 6,
-        villainType: 'boss',
+        villainType: 'dark_crow',
         allies: ['leo', 'maya', 'kael', 'elias', 'silas'],
         traps: [{ type: 'fire', count: 3 }, { type: 'saw_blade', count: 2 }, { type: 'poison_gas', count: 2 }]
       },
@@ -380,7 +380,7 @@ class GameEngine {
           { speaker: "SILAS", text: "¡Entonces DEMUÉSTRALO!", img: "assets/silas_kane.png" }
         ],
         enemiesCount: 5,
-        villainType: 'boss',
+        villainType: 'silas_boss',
         allies: ['leo', 'maya', 'kael'],
         traps: [{ type: 'poison_gas', count: 3 }, { type: 'saw_blade', count: 3 }]
       },
@@ -396,7 +396,7 @@ class GameEngine {
           { speaker: "NOCTIS", text: "¡PAGARÁS POR TODO, NYX! ¡POR ELIAS!", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 3,
-        villainType: 'boss',
+        villainType: 'nyx',
         allies: ['leo', 'maya', 'kael'],
         traps: [{ type: 'poison_gas', count: 2 }, { type: 'saw_blade', count: 2 }]
       },
@@ -413,7 +413,7 @@ class GameEngine {
           { speaker: "NOCTIS", text: "¡POR VANGUARD ECLIPSE... POR ELIAS THORN... ESTE ES EL FINAL, VOID!", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 2,
-        villainType: 'boss',
+        villainType: 'void_boss',
         allies: ['leo', 'maya', 'kael'],
         traps: [{ type: 'fire', count: 3 }, { type: 'saw_blade', count: 3 }, { type: 'spikes', count: 4 }, { type: 'poison_gas', count: 2 }]
       }
@@ -659,7 +659,7 @@ class GameEngine {
             const dist = Math.hypot(enemyCenterX - shell.x, enemyCenterY - shell.y);
 
             if (dist <= shell.aoeRadius) {
-              const isBoss = (enemy.type === 'boss' || enemy.type === 'umbra' || enemy.type === 'kaelen');
+              const isBoss = enemy.isBossType();
               const dmg = isBoss ? 50 : shell.damage;
               enemy.takeDamage(dmg);
               this.player.addRage(20 * (1 + this.upgrades.rageGain * 0.3));
