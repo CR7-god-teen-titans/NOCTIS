@@ -14,7 +14,7 @@ class Ally {
   constructor(x, y, type = 'leo') {
     this.x = x;
     this.y = y;
-    this.type = type; // 'leo', 'silas', 'maya', 'kael'
+    this.type = type; // 'leo', 'silas', 'maya', 'kael', 'elias'
     this.width = 44;
     this.height = 68;
     this.vx = 0;
@@ -29,7 +29,8 @@ class Ally {
       leo:   { hp: 160, speed: 4.5, damage: 25, cooldown: 45, reach: 60,  color: '#fbbf24', name: 'LEO' },
       silas: { hp: 120, speed: 5.5, damage: 35, cooldown: 30, reach: 75,  color: '#10b981', name: 'SILAS' },
       maya:  { hp: 140, speed: 4.0, damage: 20, cooldown: 55, reach: 90, color: '#f472b6', name: 'MAYA' },
-      kael:  { hp: 130, speed: 5.0, damage: 30, cooldown: 35, reach: 65,  color: '#ef4444', name: 'KAEL' }
+      kael:  { hp: 130, speed: 5.0, damage: 30, cooldown: 35, reach: 65,  color: '#ef4444', name: 'KAEL' },
+      elias: { hp: 200, speed: 3.5, damage: 28, cooldown: 40, reach: 70,  color: '#f59e0b', name: 'ELIAS' }
     };
     const s = stats[type] || stats.leo;
     this.maxHp = s.hp;
@@ -241,7 +242,8 @@ class Ally {
       leo:   { body: '#1e40af', limb: '#1e3a8a', accent: '#fbbf24', belt: '#92400e', glow: '#fbbf24', cape: 'rgba(59,130,246,0.5)', hpBar: '#3b82f6' },
       silas: { body: '#065f46', limb: '#064e3b', accent: '#10b981', belt: '#374151', glow: '#10b981', cape: 'rgba(16,185,129,0.4)', hpBar: '#10b981' },
       maya:  { body: '#831843', limb: '#6b1a3a', accent: '#f472b6', belt: '#9f1239', glow: '#f472b6', cape: 'rgba(244,114,182,0.4)', hpBar: '#f472b6' },
-      kael:  { body: '#450a0a', limb: '#3b0808', accent: '#ef4444', belt: '#4a4a4a', glow: '#ef4444', cape: 'rgba(239,68,68,0.35)', hpBar: '#ef4444' }
+      kael:  { body: '#450a0a', limb: '#3b0808', accent: '#ef4444', belt: '#4a4a4a', glow: '#ef4444', cape: 'rgba(239,68,68,0.35)', hpBar: '#ef4444' },
+      elias: { body: '#e5e7eb', limb: '#d1d5db', accent: '#f59e0b', belt: '#92400e', glow: '#f59e0b', cape: 'rgba(245,158,11,0.45)', hpBar: '#f59e0b' }
     };
     const c = colors[t] || colors.leo;
 
@@ -401,6 +403,18 @@ class Ally {
       ctx.moveTo(headCX - 5, headCY - 4);
       ctx.lineTo(headCX + 5, headCY + 4);
       ctx.stroke();
+    } else if (t === 'elias') {
+      // Elias: dark brown styled hair + golden headband
+      ctx.fillStyle = '#5c3a1e';
+      ctx.beginPath();
+      ctx.ellipse(headCX + (right ? 2 : -2), headCY - 6, 10, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Golden headband
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(headCX, headCY - 2, headR + 1, -Math.PI * 0.85, -Math.PI * 0.15);
+      ctx.stroke();
     }
 
     // Eyes
@@ -455,6 +469,22 @@ class Ally {
         ctx.moveTo(wStartX, wY + 8);
         ctx.lineTo(wEndX * 0.8 + wStartX * 0.2, wY - swing);
         ctx.stroke();
+      } else if (t === 'elias') {
+        // Spear thrust
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(wStartX, wY);
+        ctx.lineTo(wEndX * 0.9 + wStartX * 0.1, wY - swing * 0.5);
+        ctx.stroke();
+        // Spear tip glow
+        ctx.fillStyle = '#f59e0b';
+        ctx.shadowBlur = 16;
+        ctx.beginPath();
+        ctx.moveTo(wEndX * 0.9 + wStartX * 0.1, wY - swing * 0.5 - 5);
+        ctx.lineTo(wEndX * 0.9 + wStartX * 0.1 + (right ? 8 : -8), wY - swing * 0.5);
+        ctx.lineTo(wEndX * 0.9 + wStartX * 0.1, wY - swing * 0.5 + 5);
+        ctx.closePath();
+        ctx.fill();
       }
       ctx.restore();
     }
@@ -475,6 +505,23 @@ class Ally {
       ctx.shadowColor = '#f472b6';
       ctx.beginPath();
       ctx.arc(staffX, sy + 10, 4 + Math.sin(time / 300) * 1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Elias: show shield always
+    if (t === 'elias') {
+      ctx.save();
+      const shX = right ? sx - 6 : sx + w + 2;
+      ctx.fillStyle = '#f59e0b';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#f59e0b';
+      ctx.beginPath();
+      ctx.moveTo(shX, sy + 16);
+      ctx.lineTo(shX + (right ? -8 : 8), sy + 26);
+      ctx.lineTo(shX, sy + 40);
+      ctx.lineTo(shX + (right ? 4 : -4), sy + 26);
+      ctx.closePath();
       ctx.fill();
       ctx.restore();
     }

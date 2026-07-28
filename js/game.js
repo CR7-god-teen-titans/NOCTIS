@@ -129,7 +129,7 @@ class GameEngine {
     });
 
     document.getElementById('btn-next-chapter').addEventListener('click', () => {
-      const nextChap = this.currentChapter < 17 ? this.currentChapter + 1 : 1;
+      const nextChap = this.currentChapter < 19 ? this.currentChapter + 1 : 1;
       this.startChapter(nextChap);
     });
   }
@@ -238,12 +238,15 @@ class GameEngine {
           { speaker: "LEO", text: "Hay alguien más aquí... ¿quién es ese en las sombras?", img: "assets/leo_mercer.png" },
           { speaker: "KAEL", text: "...Soy Kael Draven. Rastreador. He seguido estas sombras por semanas.", img: "assets/kael_draven.png" },
           { speaker: "KAEL", text: "No confío en ti, Noctis. Tu poder oscuro es peligroso. Pero necesito aliados.", img: "assets/kael_draven.png" },
-          { speaker: "NOCTIS", text: "Entonces pelea a nuestro lado y juzga por ti mismo.", img: "assets/noctis_cover.png" },
+          { speaker: "ELIAS", text: "Calma, joven rastreador. Yo soy Elias Thorn, guardián de la Orden de la Luz Eterna.", img: "assets/elias_thorn.png" },
+          { speaker: "ELIAS", text: "He observado a Noctis desde hace tiempo. Su oscuridad no es una maldición... es un don que aún no comprende.", img: "assets/elias_thorn.png" },
+          { speaker: "NOCTIS", text: "¿Un don? Todos los que me rodean solo ven peligro en mi poder.", img: "assets/noctis_cover.png" },
+          { speaker: "ELIAS", text: "Porque aún no has aprendido a controlarlo. Permíteme guiarte.", img: "assets/elias_thorn.png" },
           { speaker: "ESPÍRITU", text: "Noctis... libéranos... o únete a nosotros por la eternidad...", img: "assets/noctis_rage.png" }
         ],
         enemiesCount: 7,
         villainType: null,
-        allies: ['leo', 'maya', 'kael'],
+        allies: ['leo', 'maya', 'kael', 'elias'],
         traps: [{ type: 'poison_gas', count: 3 }, { type: 'spikes', count: 2 }]
       },
       10: {
@@ -251,16 +254,18 @@ class GameEngine {
         introDialogue: [
           { speaker: "MAYA", text: "La Fortaleza de Ceniza. Detecto actividad masiva en el interior.", img: "assets/maya_cross.png" },
           { speaker: "KAEL", text: "Hay trampas por todas partes. Yo iré al frente.", img: "assets/kael_draven.png" },
+          { speaker: "ELIAS", text: "Ten cuidado, Kael. La impaciencia es el arma favorita del enemigo.", img: "assets/elias_thorn.png" },
           { speaker: "LEO", text: "¡El puente se derrumba! ¡NOCTIS, CORRE!", img: "assets/leo_mercer.png" },
           { speaker: "NOCTIS", text: "¡El piso se viene abajo...! No puedo... agarrarme...", img: "assets/noctis_cover.png" },
           { speaker: "SILAS", text: "...Todavía no era tu momento.", img: "assets/silas_kane.png" },
           { speaker: "NOCTIS", text: "¿Quién eres? ¿Por qué me salvaste?", img: "assets/noctis_cover.png" },
           { speaker: "SILAS", text: "Soy Silas Kane. He observado tu camino desde las sombras. Ahora soy parte de Vanguard Eclipse.", img: "assets/silas_kane.png" },
+          { speaker: "ELIAS", text: "...Silas Kane. He oído ese nombre antes. Ten cuidado, Noctis.", img: "assets/elias_thorn.png" },
           { speaker: "KAEL", text: "Otro misterioso... Genial. Al menos sabe pelear.", img: "assets/kael_draven.png" }
         ],
         enemiesCount: 8,
         villainType: null,
-        allies: ['leo', 'maya', 'kael', 'silas'],
+        allies: ['leo', 'maya', 'kael', 'elias', 'silas'],
         traps: [{ type: 'spikes', count: 4 }, { type: 'fire', count: 3 }, { type: 'saw_blade', count: 2 }, { type: 'poison_gas', count: 2 }]
       },
       11: {
@@ -268,13 +273,14 @@ class GameEngine {
         introDialogue: [
           { speaker: "ZEPHYR", text: "Al fin te encuentro, Noctis. Me enviaron a cazar al 'héroe' que destruyó a Malakor.", img: "assets/noctis_rage.png" },
           { speaker: "LEO", text: "¡No estás solo, Zephyr! ¡Somos Vanguard Eclipse!", img: "assets/leo_mercer.png" },
-          { speaker: "MAYA", text: "Cinco contra uno. Mis cálculos dicen que no tienes oportunidad.", img: "assets/maya_cross.png" },
+          { speaker: "MAYA", text: "Seis contra uno. Mis cálculos dicen que no tienes oportunidad.", img: "assets/maya_cross.png" },
+          { speaker: "ELIAS", text: "No te confíes, Maya. Los cazadores como él son impredecibles.", img: "assets/elias_thorn.png" },
           { speaker: "KAEL", text: "Déjenmelo a mí. Conozco a los cazadores como él.", img: "assets/kael_draven.png" },
           { speaker: "NOCTIS", text: "He enfrentado a mi propia sombra. Un cazador no me asusta.", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 4,
         villainType: 'umbra',
-        allies: ['leo', 'maya', 'kael', 'silas'],
+        allies: ['leo', 'maya', 'kael', 'elias', 'silas'],
         traps: [{ type: 'saw_blade', count: 2 }, { type: 'fire', count: 2 }]
       },
       12: {
@@ -282,41 +288,71 @@ class GameEngine {
         introDialogue: [
           { speaker: "SILAS", text: "La Reliquia del Silencio está en las profundidades. Yo conozco el camino.", img: "assets/silas_kane.png" },
           { speaker: "KAEL", text: "¿Cómo sabes eso, Silas? Cada vez desconfío más de ti.", img: "assets/kael_draven.png" },
+          { speaker: "ELIAS", text: "Kael tiene razón en dudar, pero ahora necesitamos unidad. Yo vigilaré.", img: "assets/elias_thorn.png" },
           { speaker: "MAYA", text: "Kael, contrólate. Silas nos ha salvado. Necesitamos confiar en el equipo.", img: "assets/maya_cross.png" },
           { speaker: "NOCTIS", text: "Las criaturas abisales nos rodean. ¡Vanguard Eclipse, formación!", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 8,
         villainType: null,
-        allies: ['leo', 'maya', 'kael', 'silas'],
+        allies: ['leo', 'maya', 'kael', 'elias', 'silas'],
         traps: [{ type: 'poison_gas', count: 3 }, { type: 'spikes', count: 3 }]
       },
+      // ========== THE DARK CROW — ELIAS'S SACRIFICE ==========
       13: {
-        title: "Capítulo 13: La Torre del Reloj Eterno",
+        title: "Capítulo 13: El Cuervo Oscuro",
+        introDialogue: [
+          { speaker: "DARK CROW", text: "Vanguard Eclipse... qué nombre tan pretencioso para un grupo de insectos.", img: "assets/dark_crow.png" },
+          { speaker: "DARK CROW", text: "Soy The Dark Crow. Y he venido a arrancarles las alas una por una.", img: "assets/dark_crow.png" },
+          { speaker: "ELIAS", text: "¡Esa energía...! Noctis, este enemigo es diferente. Está conectado al Vacío directamente.", img: "assets/elias_thorn.png" },
+          { speaker: "NOCTIS", text: "¡Entonces lo enfrentaremos juntos!", img: "assets/noctis_cover.png" },
+          { speaker: "DARK CROW", text: "¡MUERAN!", img: "assets/dark_crow.png" }
+        ],
+        outroDialogue: [
+          { speaker: "DARK CROW", text: "¡Si no puedo destruirlos... LOS LLEVARÉ CONMIGO AL ABISMO!", img: "assets/dark_crow.png" },
+          { speaker: "ELIAS", text: "¡NO! ¡NOCTIS, TODOS, ATRÁS! ¡YO LO CONTENDRÉ!", img: "assets/elias_thorn.png" },
+          { speaker: "LEO", text: "¡¡ELIAS, NO!!", img: "assets/leo_mercer.png" },
+          { speaker: "MAYA", text: "¡Está usando todo su poder de luz para sellar la explosión...!", img: "assets/maya_cross.png" },
+          { speaker: "KAEL", text: "...No... no puede ser...", img: "assets/kael_draven.png" },
+          { speaker: "ELIAS", text: "Noctis... escúchame bien... estas serán mis últimas palabras...", img: "assets/elias_thorn.png" },
+          { speaker: "ELIAS", text: "No luches contra tu oscuridad, Noctis. Aprende a controlarla... ese será tu verdadero poder.", img: "assets/elias_thorn.png" },
+          { speaker: "ELIAS", text: "Cuida a Vanguard Eclipse... Confío en ti... hijo...", img: "assets/elias_thorn.png" },
+          { speaker: "NOCTIS", text: "...ELIAS... ¡¡¡ELIAS!!!", img: "assets/noctis_rage.png" },
+          { speaker: "SILAS", text: "...Se fue. La luz de Elias Thorn se ha apagado. Pero su sacrificio nos salvó a todos.", img: "assets/silas_kane.png" },
+          { speaker: "NOCTIS", text: "Nunca olvidaré tus palabras, Elias. Aprenderé a controlar mi oscuridad. Te lo juro.", img: "assets/noctis_cover.png" }
+        ],
+        enemiesCount: 6,
+        villainType: 'boss',
+        allies: ['leo', 'maya', 'kael', 'elias', 'silas'],
+        traps: [{ type: 'fire', count: 3 }, { type: 'saw_blade', count: 2 }, { type: 'poison_gas', count: 2 }]
+      },
+      14: {
+        title: "Capítulo 14: La Torre del Reloj Eterno",
         introDialogue: [
           { speaker: "NOCTIS", text: "Esta torre distorsiona el tiempo. Veo versiones de mí mismo en el pasado y el futuro.", img: "assets/noctis_cover.png" },
           { speaker: "NOCTIS FUTURO", text: "No cometas el mismo error que yo. Controla la furia o la torre te consumirá.", img: "assets/noctis_rage.png" },
-          { speaker: "LEO", text: "¿Eso eres tú... del futuro? Noctis, ten cuidado.", img: "assets/leo_mercer.png" }
+          { speaker: "LEO", text: "¿Eso eres tú... del futuro? Noctis, ten cuidado.", img: "assets/leo_mercer.png" },
+          { speaker: "NOCTIS", text: "Elias me dijo que controlara mi oscuridad... Aquí empiezo a entender por qué.", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 9,
         villainType: 'kaelen',
         allies: ['leo', 'maya', 'kael', 'silas'],
         traps: [{ type: 'saw_blade', count: 3 }, { type: 'fire', count: 2 }]
       },
-      14: {
-        title: "Capítulo 14: El Valle de los Cristales Rotos",
+      15: {
+        title: "Capítulo 15: El Valle de los Cristales Rotos",
         introDialogue: [
           { speaker: "MAYA", text: "Estos cristales amplifican todo... nuestro poder y nuestros miedos.", img: "assets/maya_cross.png" },
           { speaker: "KAEL", text: "Puedo sentirlo. Mi desconfianza... se amplifica. Noctis, ¿puedo confiar en ti?", img: "assets/kael_draven.png" },
-          { speaker: "NOCTIS", text: "Kael... sí. Te juro que jamás perderé el control. Somos Vanguard Eclipse.", img: "assets/noctis_cover.png" },
-          { speaker: "KAEL", text: "...Bien. Entonces pelemos juntos. De verdad esta vez.", img: "assets/kael_draven.png" }
+          { speaker: "NOCTIS", text: "Kael... sí. Elias confió en mí con sus últimas palabras. Te juro que jamás perderé el control.", img: "assets/noctis_cover.png" },
+          { speaker: "KAEL", text: "...Bien. Por Elias. Pelemos juntos. De verdad esta vez.", img: "assets/kael_draven.png" }
         ],
         enemiesCount: 10,
         villainType: null,
         allies: ['leo', 'maya', 'kael', 'silas'],
         traps: [{ type: 'spikes', count: 3 }, { type: 'fire', count: 2 }, { type: 'saw_blade', count: 2 }]
       },
-      15: {
-        title: "Capítulo 15: La Ciudadela Carmesí",
+      16: {
+        title: "Capítulo 16: La Ciudadela Carmesí",
         introDialogue: [
           { speaker: "NOCTIS", text: "La Orden Carmesí... guerreros que bebieron la sangre de Malakor.", img: "assets/noctis_cover.png" },
           { speaker: "CARMESÍ", text: "¡Malakor nos dio el poder que tú desperdicias!", img: "assets/noctis_rage.png" },
@@ -328,37 +364,57 @@ class GameEngine {
         allies: ['leo', 'maya', 'kael', 'silas'],
         traps: [{ type: 'fire', count: 4 }, { type: 'saw_blade', count: 3 }]
       },
-      16: {
-        title: "Capítulo 16: Nyx, la Reina de la Noche",
+      // ========== SILAS'S BETRAYAL ==========
+      17: {
+        title: "Capítulo 17: La Traición de Silas",
+        introDialogue: [
+          { speaker: "SILAS", text: "...Lo siento, Noctis. Pero esto termina aquí.", img: "assets/silas_kane.png" },
+          { speaker: "LEO", text: "¿Silas...? ¿Qué estás haciendo?", img: "assets/leo_mercer.png" },
+          { speaker: "SILAS", text: "Nunca fui parte de Vanguard Eclipse. Mi verdadera lealtad siempre fue con Nyx.", img: "assets/silas_kane.png" },
+          { speaker: "SILAS", text: "Ella me envió para vigilarlos, para encontrar sus debilidades... y para destruirlos desde dentro.", img: "assets/silas_kane.png" },
+          { speaker: "KAEL", text: "¡LO SABÍA! ¡Siempre supe que no eras de fiar!", img: "assets/kael_draven.png" },
+          { speaker: "MAYA", text: "Silas... ¿todo fue mentira? ¿Cuando salvaste a Noctis en la fortaleza...?", img: "assets/maya_cross.png" },
+          { speaker: "SILAS", text: "Todo fue parte del plan de Nyx. Necesitaba su confianza para acercarme lo suficiente.", img: "assets/silas_kane.png" },
+          { speaker: "NOCTIS", text: "...Elias tenía razón. Él me advirtió sobre ti. No lucharé con rabia, Silas.", img: "assets/noctis_cover.png" },
+          { speaker: "NOCTIS", text: "Pero si te interpones en nuestro camino... Vanguard Eclipse no se detendrá.", img: "assets/noctis_cover.png" },
+          { speaker: "SILAS", text: "¡Entonces DEMUÉSTRALO!", img: "assets/silas_kane.png" }
+        ],
+        enemiesCount: 5,
+        villainType: 'boss',
+        allies: ['leo', 'maya', 'kael'],
+        traps: [{ type: 'poison_gas', count: 3 }, { type: 'saw_blade', count: 3 }]
+      },
+      18: {
+        title: "Capítulo 18: Nyx, la Reina de la Noche",
         introDialogue: [
           { speaker: "NYX", text: "Al fin nos conocemos, Noctis. Yo creé a Malakor. Yo desperté tu furia oscura.", img: "assets/noctis_rage.png" },
-          { speaker: "NYX", text: "Todo fue diseñado. Tu poder, tu lucha, tu dolor...", img: "assets/noctis_rage.png" },
-          { speaker: "SILAS", text: "...Yo lo sabía. Por eso te seguí, Noctis. Nyx debe caer.", img: "assets/silas_kane.png" },
-          { speaker: "KAEL", text: "Noctis... tenías razón. Tu oscuridad no te define. Perdóname por dudar.", img: "assets/kael_draven.png" },
-          { speaker: "MAYA", text: "¡Vanguard Eclipse al completo! ¡Formación final!", img: "assets/maya_cross.png" },
+          { speaker: "NYX", text: "Todo fue diseñado. Tu poder, tu lucha, tu dolor... incluso Silas fue mi peón.", img: "assets/noctis_rage.png" },
+          { speaker: "NOCTIS", text: "Ya no me importa tu plan. Elias me enseñó a controlar mi oscuridad.", img: "assets/noctis_cover.png" },
+          { speaker: "KAEL", text: "Por Elias. Por cada compañero que hemos perdido. ¡ACABEMOS CON ESTO!", img: "assets/kael_draven.png" },
+          { speaker: "MAYA", text: "¡Vanguard Eclipse! ¡Formación final!", img: "assets/maya_cross.png" },
           { speaker: "LEO", text: "¡POR NOCTURNIA!", img: "assets/leo_mercer.png" },
-          { speaker: "NOCTIS", text: "¡PAGARÁS POR TODO, NYX!", img: "assets/noctis_cover.png" }
+          { speaker: "NOCTIS", text: "¡PAGARÁS POR TODO, NYX! ¡POR ELIAS!", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 3,
         villainType: 'boss',
-        allies: ['leo', 'maya', 'kael', 'silas'],
+        allies: ['leo', 'maya', 'kael'],
         traps: [{ type: 'poison_gas', count: 2 }, { type: 'saw_blade', count: 2 }]
       },
-      17: {
-        title: "Capítulo 17: El Origen de la Oscuridad — VOID",
+      19: {
+        title: "Capítulo 19: El Origen de la Oscuridad — VOID",
         introDialogue: [
           { speaker: "VOID", text: "Yo soy el principio y el final. La oscuridad antes del primer amanecer.", img: "assets/noctis_rage.png" },
           { speaker: "VOID", text: "Cada héroe, cada villano... todo nació de mí. Y todo regresará a mí.", img: "assets/noctis_rage.png" },
           { speaker: "LEO", text: "Noctis... ha sido un honor. Vanguard Eclipse hasta el final.", img: "assets/leo_mercer.png" },
           { speaker: "MAYA", text: "Los números no importan aquí. Lo que importa es que estamos juntos.", img: "assets/maya_cross.png" },
-          { speaker: "KAEL", text: "Confío en ti, Noctis. Con mi vida. Terminemos esto.", img: "assets/kael_draven.png" },
-          { speaker: "SILAS", text: "Porque todavía no es nuestro momento. Y no lo será hoy.", img: "assets/silas_kane.png" },
-          { speaker: "NOCTIS", text: "¡MI FURIA NO ME DEFINE! ¡YO DECIDO QUIÉN SOY!", img: "assets/noctis_cover.png" },
-          { speaker: "NOCTIS", text: "¡POR VANGUARD ECLIPSE... ESTE ES EL FINAL, VOID!", img: "assets/noctis_cover.png" }
+          { speaker: "KAEL", text: "Confío en ti, Noctis. Con mi vida. Por Elias. Terminemos esto.", img: "assets/kael_draven.png" },
+          { speaker: "NOCTIS", text: "Elias me dijo que no luchara contra mi oscuridad... sino que aprendiera a controlarla.", img: "assets/noctis_cover.png" },
+          { speaker: "NOCTIS", text: "¡MI OSCURIDAD NO ME DEFINE! ¡YO DECIDO QUIÉN SOY!", img: "assets/noctis_cover.png" },
+          { speaker: "NOCTIS", text: "¡POR VANGUARD ECLIPSE... POR ELIAS THORN... ESTE ES EL FINAL, VOID!", img: "assets/noctis_cover.png" }
         ],
         enemiesCount: 2,
         villainType: 'boss',
-        allies: ['leo', 'maya', 'kael', 'silas'],
+        allies: ['leo', 'maya', 'kael'],
         traps: [{ type: 'fire', count: 3 }, { type: 'saw_blade', count: 3 }, { type: 'spikes', count: 4 }, { type: 'poison_gas', count: 2 }]
       }
     };
