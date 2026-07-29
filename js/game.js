@@ -442,11 +442,25 @@ class GameEngine {
     this.allies = [];
     this.traps = [];
 
-    // Spawn regular minions
+    // Spawn regular minions with variety based on chapter
+    const chap = this.currentChapter;
+    const minionPools = {
+      easy:   ['walker', 'walker', 'caster'],
+      medium: ['walker', 'caster', 'crawler', 'phantom'],
+      hard:   ['walker', 'caster', 'crawler', 'phantom', 'brute', 'bomber'],
+      brutal: ['walker', 'caster', 'crawler', 'phantom', 'brute', 'bomber', 'sentinel', 'wraith']
+    };
+    let pool;
+    if (chap <= 3) pool = minionPools.easy;
+    else if (chap <= 7) pool = minionPools.medium;
+    else if (chap <= 13) pool = minionPools.hard;
+    else pool = minionPools.brutal;
+
     for (let i = 0; i < chapData.enemiesCount; i++) {
-      const type = i % 2 === 0 ? 'walker' : 'caster';
+      const type = pool[i % pool.length];
       const spawnX = 600 + (i * 300);
-      this.enemies.push(new Enemy(spawnX, this.groundY - 60, type));
+      const spawnH = type === 'brute' ? 75 : (type === 'crawler' ? 30 : 60);
+      this.enemies.push(new Enemy(spawnX, this.groundY - spawnH, type));
     }
 
     // Spawn Villain Boss if applicable
