@@ -914,272 +914,78 @@ class Enemy {
   }
 
   drawMinion(ctx, sx, sy, w, h, right, time) {
-    let hpColor = '#ef4444';
-    
-    if (this.type === 'walker') {
-      hpColor = '#ef4444';
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = hpColor;
-      const legSwing = Math.sin(time / 100) * 5;
-      ctx.fillStyle = '#0a0f1a';
-      ctx.save();
-      ctx.translate(sx + 10, sy + h - 20); ctx.rotate(legSwing * Math.PI / 180);
-      ctx.fillRect(-4, 0, 8, 20); ctx.restore();
-      ctx.save();
-      ctx.translate(sx + w - 10, sy + h - 20); ctx.rotate(-legSwing * Math.PI / 180);
-      ctx.fillRect(-4, 0, 8, 20); ctx.restore();
+    const hpColors = {
+      walker: '#ef4444', caster: '#a855f7', phantom: '#e0f2fe',
+      brute: '#f97316', crawler: '#dc2626', bomber: '#f59e0b',
+      sentinel: '#3b82f6', wraith: '#d946ef'
+    };
+    const hpColor = hpColors[this.type] || '#ef4444';
 
-      ctx.fillStyle = '#0f172a';
-      ctx.beginPath();
-      ctx.ellipse(sx + w / 2, sy + h / 2 - 2, w / 2 - 2, h / 2 - 12, 0, 0, Math.PI * 2);
-      ctx.fill();
+    // Sprite rendering dimensions (slightly larger for visual impact)
+    const spriteW = w * 1.8;
+    const spriteH = h * 1.8;
+    const spriteX = sx + w / 2 - spriteW / 2;
+    const spriteY = sy + h - spriteH;
 
-      const headOff = right ? 8 : -8;
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath(); ctx.arc(sx + w / 2 + headOff, sy + 14, 10, 0, Math.PI * 2); ctx.fill();
+    // Per-type animation offsets
+    let drawY = spriteY;
+    let alpha = 1.0;
+    let glowColor = null;
+    let glowSize = 0;
 
-      ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2;
-      const clawX = right ? sx + w + 2 : sx - 2;
-      const clawDir = right ? 1 : -1;
-      for (let i = 0; i < 3; i++) {
-        ctx.beginPath(); ctx.moveTo(clawX, sy + 26 + i * 6);
-        ctx.lineTo(clawX + clawDir * 10, sy + 22 + i * 6); ctx.stroke();
-      }
-
-      ctx.fillStyle = '#ef4444'; ctx.shadowBlur = 8; ctx.shadowColor = '#ef4444';
-      const eyeX = right ? sx + w / 2 + headOff + 2 : sx + w / 2 + headOff - 6;
-      ctx.fillRect(eyeX, sy + 12, 2, 3);
-      ctx.fillRect(eyeX + 3, sy + 12, 2, 3);
-    } else if (this.type === 'caster') {
-      hpColor = '#a855f7';
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = hpColor;
-      
-      ctx.fillStyle = '#581c87';
-      ctx.beginPath(); ctx.moveTo(sx + w / 2, sy + 18);
-      ctx.lineTo(sx - 2, sy + h); ctx.lineTo(sx + w + 2, sy + h);
-      ctx.closePath(); ctx.fill();
-
-      ctx.fillStyle = '#3b0764';
-      ctx.beginPath(); ctx.arc(sx + w / 2, sy + 16, 13, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(sx + w / 2 - 8, sy + 6); ctx.lineTo(sx + w / 2, sy - 8);
-      ctx.lineTo(sx + w / 2 + 8, sy + 6); ctx.closePath(); ctx.fill();
-
-      ctx.fillStyle = '#c084fc'; ctx.shadowBlur = 10; ctx.shadowColor = '#c084fc';
-      const mEyeX = right ? sx + w / 2 + 1 : sx + w / 2 - 7;
-      ctx.fillRect(mEyeX, sy + 15, 2, 3);
-      ctx.fillRect(mEyeX + 4, sy + 15, 2, 3);
-
-      ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 2;
-      const staffX = right ? sx + w + 4 : sx - 4;
-      ctx.beginPath(); ctx.moveTo(staffX, sy + 10); ctx.lineTo(staffX, sy + h - 5); ctx.stroke();
-      ctx.fillStyle = '#c084fc'; ctx.shadowBlur = 12; ctx.shadowColor = '#a855f7';
-      ctx.beginPath(); ctx.arc(staffX, sy + 8, 5, 0, Math.PI * 2); ctx.fill();
-    } else if (this.type === 'phantom') {
-      hpColor = '#e0f2fe';
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = hpColor;
-      
-      const alpha = 0.4 + Math.abs(Math.sin(time / 150)) * 0.4;
-      ctx.globalAlpha = alpha;
-      
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath();
-      ctx.ellipse(sx + w/2, sy + h/2, w/2, h/2, 0, 0, Math.PI*2);
-      ctx.fill();
-      
-      ctx.beginPath();
-      const tailX = sx + w/2;
-      const tailY = sy + h - 5;
-      const wave = Math.sin(time/100) * 10;
-      ctx.moveTo(tailX - 10, tailY);
-      ctx.quadraticCurveTo(tailX + wave, tailY + 15, tailX, tailY + 30);
-      ctx.quadraticCurveTo(tailX - wave, tailY + 15, tailX + 10, tailY);
-      ctx.fill();
-      
-      ctx.globalAlpha = 1.0;
-      ctx.fillStyle = '#ffffff';
-      const eyeX = right ? sx + w/2 + 5 : sx + w/2 - 10;
-      ctx.beginPath(); ctx.arc(eyeX, sy + h/3, 3, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(eyeX + 6, sy + h/3, 3, 0, Math.PI*2); ctx.fill();
-      
-    } else if (this.type === 'brute') {
-      hpColor = '#f97316';
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = hpColor;
-      
-      ctx.fillStyle = '#1c1917';
-      ctx.fillRect(sx, sy + 15, w, h - 15);
-      
-      ctx.fillStyle = '#292524';
-      ctx.fillRect(sx - 5, sy + 15, w + 10, 20);
-      
-      ctx.fillRect(sx + w/2 - 12, sy, 24, 20);
-      
-      ctx.strokeStyle = '#ea580c';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(sx + 10, sy + 30); ctx.lineTo(sx + 25, sy + 45); ctx.lineTo(sx + 15, sy + 60);
-      ctx.moveTo(sx + w - 10, sy + 35); ctx.lineTo(sx + w - 20, sy + 50); ctx.lineTo(sx + w - 5, sy + 65);
-      ctx.stroke();
-      
-      const fistSwing = Math.sin(time / 200) * 5;
-      ctx.fillStyle = '#44403c';
-      const fistX1 = sx - 10 + (right ? fistSwing : -fistSwing);
-      const fistX2 = sx + w - 5 + (right ? -fistSwing : fistSwing);
-      ctx.fillRect(fistX1, sy + h - 25, 15, 20);
-      ctx.fillRect(fistX2, sy + h - 25, 15, 20);
-      
-      ctx.fillStyle = '#f97316';
-      const eyeX = right ? sx + w/2 + 2 : sx + w/2 - 6;
-      ctx.fillRect(eyeX, sy + 5, 4, 3);
-      
-    } else if (this.type === 'crawler') {
-      hpColor = '#dc2626';
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = hpColor;
-      
-      const skitterY = Math.abs(Math.sin(time / 50)) * 3;
-      
-      ctx.fillStyle = '#0f172a';
-      ctx.beginPath();
-      ctx.ellipse(sx + w/2, sy + h/2 + skitterY, w/2, h/3, 0, 0, Math.PI*2);
-      ctx.fill();
-      
-      ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 3;
-      for(let i=0; i<3; i++) {
-        const legSwing = Math.sin(time / 50 + i) * 6;
-        ctx.beginPath(); ctx.moveTo(sx + w/2 - 10, sy + h/2 + skitterY); 
-        ctx.lineTo(sx - 5 + legSwing, sy + h); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(sx + w/2 + 10, sy + h/2 + skitterY); 
-        ctx.lineTo(sx + w + 5 - legSwing, sy + h); ctx.stroke();
-      }
-      
-      ctx.fillStyle = '#ef4444';
-      const eyeX = right ? sx + w - 15 : sx + 5;
-      ctx.beginPath(); ctx.arc(eyeX, sy + h/2 + skitterY - 2, 2, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(eyeX + 4, sy + h/2 + skitterY - 2, 2, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(eyeX + 8, sy + h/2 + skitterY - 2, 2, 0, Math.PI*2); ctx.fill();
-      
+    if (this.type === 'phantom') {
+      drawY += Math.sin(time / 150) * 6;
+      alpha = 0.5 + Math.abs(Math.sin(time / 200)) * 0.4;
+      glowColor = '#38bdf8';
+      glowSize = 15;
     } else if (this.type === 'bomber') {
-      hpColor = '#f59e0b';
-      ctx.shadowBlur = 15;
-      
       const pulse = Math.abs(Math.sin(time / 100));
-      ctx.shadowColor = `rgba(245, 158, 11, ${0.5 + pulse*0.5})`;
-      
-      ctx.fillStyle = '#451a03';
-      ctx.beginPath();
-      ctx.arc(sx + w/2, sy + h/2 + 5, w/2, 0, Math.PI*2);
-      ctx.fill();
-      
-      ctx.fillStyle = `rgba(239, 68, 68, ${0.3 + pulse*0.7})`;
-      ctx.beginPath();
-      ctx.arc(sx + w/2, sy + h/2 + 5, w/3, 0, Math.PI*2);
-      ctx.fill();
-      
-      ctx.strokeStyle = '#78350f';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(sx + w/2, sy + 5);
-      ctx.quadraticCurveTo(sx + w/2 + 10, sy - 5, sx + w/2 + 5, sy - 10);
-      ctx.stroke();
-      
-      if (Math.random() > 0.3) {
-        ctx.fillStyle = '#fde047';
-        ctx.fillRect(sx + w/2 + 3 + (Math.random()*6-3), sy - 12 + (Math.random()*6-3), 2, 2);
-        ctx.fillRect(sx + w/2 + 3 + (Math.random()*6-3), sy - 12 + (Math.random()*6-3), 2, 2);
-      }
-      
-      ctx.fillStyle = '#292524';
-      ctx.fillRect(sx + w/2 - 10, sy + h - 5, 6, 8);
-      ctx.fillRect(sx + w/2 + 4, sy + h - 5, 6, 8);
-      
-    } else if (this.type === 'sentinel') {
-      hpColor = '#3b82f6';
-      ctx.shadowBlur = 5;
-      ctx.shadowColor = hpColor;
-      
-      ctx.fillStyle = '#1e3a8a';
-      ctx.fillRect(sx + 5, sy + 10, w - 10, h - 20);
-      
-      ctx.strokeStyle = '#94a3b8';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(sx + 5, sy + 10, w - 10, h - 20);
-      
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(sx + 10, sy + 20, w - 20, 10);
-      ctx.fillStyle = '#60a5fa';
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = '#60a5fa';
-      const scanX = Math.sin(time / 300) * ((w - 30) / 2);
-      ctx.fillRect(sx + w/2 - 5 + scanX, sy + 22, 10, 6);
-      
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = '#64748b';
-      const spearX = right ? sx + w - 5 : sx - 5;
-      ctx.fillRect(spearX, sy + 30, 8, 35);
-      
-      ctx.fillStyle = '#e2e8f0';
-      ctx.beginPath();
-      ctx.moveTo(spearX - 2, sy + 30);
-      ctx.lineTo(spearX + 10, sy + 30);
-      ctx.lineTo(spearX + 4, sy + 10);
-      ctx.fill();
-      
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(sx + 15, sy + h - 10, 6, 10);
-      ctx.fillRect(sx + w - 21, sy + h - 10, 6, 10);
-      
+      glowColor = `rgba(245, 158, 11, ${0.5 + pulse * 0.5})`;
+      glowSize = 10 + pulse * 8;
     } else if (this.type === 'wraith') {
-      hpColor = '#d946ef';
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = hpColor;
-      
-      const hoverY = Math.sin(time / 150) * 4;
-      
-      ctx.fillStyle = '#4a044e';
-      ctx.beginPath();
-      ctx.moveTo(sx + w/2, sy + 5 + hoverY);
-      ctx.lineTo(sx - 5, sy + h/2 + hoverY);
-      ctx.lineTo(sx + 5, sy + h - 10 + hoverY);
-      ctx.lineTo(sx + w/2, sy + h + hoverY);
-      ctx.lineTo(sx + w - 5, sy + h - 10 + hoverY);
-      ctx.lineTo(sx + w + 5, sy + h/2 + hoverY);
-      ctx.fill();
-      
-      ctx.fillStyle = '#701a75';
-      ctx.beginPath();
-      ctx.moveTo(sx + w/2, sy + 10 + hoverY);
-      ctx.lineTo(sx + 10, sy + h/2 + hoverY);
-      ctx.lineTo(sx + w/2, sy + h - 15 + hoverY);
-      ctx.lineTo(sx + w - 10, sy + h/2 + hoverY);
-      ctx.fill();
-      
-      ctx.fillStyle = '#2e1065';
-      ctx.beginPath();
-      ctx.arc(sx + w/2, sy + 15 + hoverY, 12, 0, Math.PI*2);
-      ctx.fill();
-      
-      ctx.fillStyle = '#e879f9';
-      const eyeX = right ? sx + w/2 + 2 : sx + w/2 - 6;
-      ctx.fillRect(eyeX, sy + 12 + hoverY, 3, 3);
-      ctx.fillRect(eyeX + 5, sy + 12 + hoverY, 3, 3);
-      
-      ctx.globalAlpha = 0.3;
-      ctx.fillStyle = '#4a044e';
-      ctx.beginPath();
-      ctx.moveTo(sx + 10, sy + h + hoverY);
-      ctx.lineTo(sx + w - 10, sy + h + hoverY);
-      ctx.lineTo(sx + w/2, sy + h + 20 + hoverY);
-      ctx.fill();
-      ctx.globalAlpha = 1.0;
+      drawY += Math.sin(time / 150) * 5;
+      glowColor = '#d946ef';
+      glowSize = 12;
+    } else if (this.type === 'brute') {
+      glowColor = '#f97316';
+      glowSize = 8;
+    } else if (this.type === 'walker') {
+      glowColor = '#ef4444';
+      glowSize = 6;
+    } else if (this.type === 'caster') {
+      glowColor = '#a855f7';
+      glowSize = 10;
+    } else if (this.type === 'sentinel') {
+      glowColor = '#3b82f6';
+      glowSize = 6;
+    } else if (this.type === 'crawler') {
+      drawY += Math.abs(Math.sin(time / 50)) * 3;
+      glowColor = '#dc2626';
+      glowSize = 8;
     }
 
+    // Try sprite rendering first
+    const spriteDrawn = SpriteManager.drawSprite(
+      ctx, this.type, spriteX, drawY, spriteW, spriteH,
+      right, // flip if facing right (sprites face left by default)
+      { alpha, glow: glowColor, glowSize }
+    );
+
+    // Fallback: simple colored rectangle if sprite not loaded
+    if (!spriteDrawn) {
+      ctx.save();
+      ctx.fillStyle = hpColor;
+      ctx.globalAlpha = 0.6;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = hpColor;
+      ctx.fillRect(sx, sy, w, h);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
+
+    // Health bar (always drawn)
     ctx.shadowBlur = 0;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
     ctx.fillRect(sx, sy - 10, w, 5);
     ctx.fillStyle = hpColor;
     ctx.fillRect(sx, sy - 10, w * (this.hp / this.maxHp), 5);
